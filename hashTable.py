@@ -29,6 +29,14 @@ def hash_function_two(string):
             hashSum += number*number*number*number
     return hashSum*31
 
+def hash_function_three_linked(string):
+    prime_number_list = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
+    hashProduct = 1
+    prime_list_len = len(prime_number_list)
+    for letter in string:
+        primeIndex = ord(letter)%prime_list_len
+        hashProduct =+ hashProduct*prime_number_list[primeIndex]
+    return hashProduct
 
 def create_movie(movie_title,genre,release_date,director,box_office_revenue,rating,duration_minutes,production_company,quote):
     movie = {
@@ -83,11 +91,11 @@ with open('MOCK_DATA.csv', mode='r', newline='', encoding='utf-8') as file:
     
     for row in reader:
         movieToAdd = create_movie(row[0], row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8])
-        key = hash_function_two(movieToAdd["title"])
+        key = hash_function_three_linked(movieToAdd["title"])
         key = key % sizeOfArray
-        successfulAddition, numberOfNewCollisions = add_to_hash_table_linear_probing(key, movieToAdd)
+        successfulAddition, numberOfNewCollisions = add_to_hash_table_linked_list(key, movieToAdd)
         numberOfCollisions += numberOfNewCollisions
-        if successfulAddition:
+        if successfulAddition & numberOfNewCollisions == 0:
             currentUnusedBuckets -= 1
         print(numberOfNewCollisions)
         numberOfNewCollisions = 0
