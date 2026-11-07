@@ -35,7 +35,7 @@ def hash_function_three_linked(string):
     prime_list_len = len(prime_number_list)
     for letter in string:
         primeIndex = ord(letter)%prime_list_len
-        hashProduct =+ hashProduct*prime_number_list[primeIndex]
+        hashProduct += hashProduct*prime_number_list[primeIndex]
     return hashProduct
 
 def hash_function_four_linked(string):
@@ -48,6 +48,16 @@ def hash_function_four_linked(string):
             hashProduct = hashProduct*number
         if hashProduct % number > number/2:
             hashProduct += (hashProduct % 300 * number)
+    return hashProduct
+
+def hash_function_final_try(string):
+    prime_number_list = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97,
+    101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199]
+    hashProduct = 1
+    prime_list_len = len(prime_number_list)
+    for letter in string:
+        primeIndex = ord(letter)%prime_list_len
+        hashProduct += hashProduct*prime_number_list[primeIndex]+primeIndex
     return hashProduct
 
 def create_movie(movie_title,genre,release_date,director,box_office_revenue,rating,duration_minutes,production_company,quote):
@@ -105,7 +115,7 @@ with open('MOCK_DATA.csv', mode='r', newline='', encoding='utf-8') as file:
     
     for row in reader:
         movieToAdd = create_movie(row[0], row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8])
-        key = hash_function_four_linked(movieToAdd["title"])
+        key = hash_function_final_try(movieToAdd["title"])
         key = key % sizeOfArray
         successfulAddition, numberOfNewCollisions = add_to_hash_table_linked_list(key, movieToAdd)
         numberOfCollisions += numberOfNewCollisions
