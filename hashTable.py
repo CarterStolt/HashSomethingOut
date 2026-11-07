@@ -1,4 +1,9 @@
-# hash something out
+# hash something out COS226
+# Carter Stolt
+# Due Date: 11/6/26
+# Desc: this program has a large variety of different hash functions I've created to try 
+# to find the most efficent one and what makes tables good or bad. It also includes methods
+# to add to the table of linear probing and linked list methods
 import csv
 import time
 
@@ -9,7 +14,7 @@ currentUnusedBuckets = sizeOfArray
 numberOfCollisions = 0
 
 hashTable = [None]*sizeOfArray
-
+titleOrQuote = "title"
 
 def hash_function(string):
     sumOfString = 0
@@ -115,15 +120,16 @@ with open('MOCK_DATA.csv', mode='r', newline='', encoding='utf-8') as file:
     
     for row in reader:
         movieToAdd = create_movie(row[0], row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8])
-        key = hash_function_final_try(movieToAdd["title"])
+        key = hash_function_final_try(movieToAdd[titleOrQuote])
         key = key % sizeOfArray
         successfulAddition, numberOfNewCollisions = add_to_hash_table_linked_list(key, movieToAdd)
         numberOfCollisions += numberOfNewCollisions
         if successfulAddition & numberOfNewCollisions == 0:
             currentUnusedBuckets -= 1
-        print(numberOfNewCollisions)
         numberOfNewCollisions = 0
 endTime = time.time()
+print("Linked List Method")
+print(titleOrQuote)
 print("Unused Buckets:", currentUnusedBuckets)
 print("Number of Collisions:", numberOfCollisions)
 print("Amount of time taken:", endTime-startTime)
