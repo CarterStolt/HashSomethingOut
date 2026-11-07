@@ -38,6 +38,18 @@ def hash_function_three_linked(string):
         hashProduct =+ hashProduct*prime_number_list[primeIndex]
     return hashProduct
 
+def hash_function_four_linked(string):
+    prime_number_list = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
+    hashProduct = 1
+    for number in prime_number_list:
+        if len(string) > number:
+            hashProduct += ord(string[number]) * number + 300
+        else:
+            hashProduct = hashProduct*number
+        if hashProduct % number > number/2:
+            hashProduct += (hashProduct % 300 * number)
+    return hashProduct
+
 def create_movie(movie_title,genre,release_date,director,box_office_revenue,rating,duration_minutes,production_company,quote):
     movie = {
         "title":movie_title,
@@ -73,6 +85,8 @@ def add_to_hash_table_linear_probing(index, data):
                 foundEmpty = True
                 return True, collisionNumber
 
+
+
 def add_to_hash_table_linked_list(index, data):
     if hashTable[index] == None:
         hashTable[index] = [data]
@@ -91,7 +105,7 @@ with open('MOCK_DATA.csv', mode='r', newline='', encoding='utf-8') as file:
     
     for row in reader:
         movieToAdd = create_movie(row[0], row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8])
-        key = hash_function_three_linked(movieToAdd["title"])
+        key = hash_function_four_linked(movieToAdd["title"])
         key = key % sizeOfArray
         successfulAddition, numberOfNewCollisions = add_to_hash_table_linked_list(key, movieToAdd)
         numberOfCollisions += numberOfNewCollisions
